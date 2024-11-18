@@ -1,13 +1,14 @@
-import { IsOptional, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUUID, MinLength } from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
   @MinLength(1)
   name: string;
 
-  @IsString()
+  @IsUUID()
+  @IsNotEmpty()
   userId: string;
-
+  
   @IsString()
   @IsOptional()
   @MinLength(1)

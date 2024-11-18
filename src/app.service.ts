@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class AppService {
   getHello(): string {
     const welcome = ` =============== Hello world! ===============\n<br>
-                      ===============    GM-ERP    ===============`;
+                      ===============  GM-ERP-API  ===============`;
 
     return welcome;
   }
