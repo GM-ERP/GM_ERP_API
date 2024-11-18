@@ -5,6 +5,7 @@ import { ProductsModule } from './products/products.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from './common/common.module';
+import { ThirdPartyTypeModule } from './third-party-type/third-party-type.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CommonModule } from './common/common.module';
     }),
     ProductsModule,
     CommonModule,
+    ThirdPartyTypeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
