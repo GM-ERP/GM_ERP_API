@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from './common/common.module';
 import { ThirdPartyTypeModule } from './third-party-type/third-party-type.module';
 import { ThirdPartyModule } from './third-party/third-party.module';
+import { PurchasesModule } from './purchases/purchases.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ThirdPartyModule } from './third-party/third-party.module';
     CommonModule,
     ThirdPartyTypeModule,
     ThirdPartyModule,
+    PurchasesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

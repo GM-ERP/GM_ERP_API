@@ -3,6 +3,7 @@ import {
   DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -20,6 +21,7 @@ export class Product {
   description?: string;
 
   @Column('date', { default: null })
+  @UpdateDateColumn()
   updatedAt?: Date;
 
   @Column('date', { default: null })

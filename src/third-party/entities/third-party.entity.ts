@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -16,10 +17,10 @@ export class ThirdParty {
   @Column('text')
   name: string;
 
-  @Column('text')
+  @Column('uuid')
   identificationTypeId: string;
 
-  @Column('text')
+  @Column('text', { unique: true })
   identificationNumber: string;
 
   @Column('text', { default: null })
@@ -39,12 +40,13 @@ export class ThirdParty {
   removedAt?: Date;
 
   @Column('date', { default: null })
+  @UpdateDateColumn()
   updatedAt?: Date;
 
   @ManyToOne(
     () => ThirdPartyType,
     (thirdPartyType) => thirdPartyType.thirdParties,
   )
-  @JoinColumn({ name: 'id' })
+  @JoinColumn({ name: 'identificationTypeId' })
   idThirdPartyType: ThirdParty;
 }

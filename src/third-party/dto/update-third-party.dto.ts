@@ -1,28 +1,41 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateThirdPartyDto } from './create-third-party.dto';
-import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+  MinLength,
+} from 'class-validator';
 
 export class UpdateThirdPartyDto extends PartialType(CreateThirdPartyDto) {
   @IsString()
-  name: string;
+  @IsOptional()
+  @MinLength(1)
+  name?: string;
 
   @IsUUID()
-  @IsNotEmpty()
-  identificationTypeId: string;
-
-  @IsString()
-  @IsNotEmpty()
-  identificationNumber: string;
+  @IsOptional()
+  identificationTypeId?: string;
 
   @IsString()
   @IsOptional()
+  @MinLength(1)
+  identificationNumber?: string;
+
+  @IsString()
+  @IsOptional()
+  @MinLength(1)
   address?: string;
 
   @IsString()
   @IsOptional()
+  @MinLength(1)
   phone?: string;
 
-  @IsString()
+  @IsEmail()
   @IsOptional()
+  @MinLength(1)
   email?: string;
 }

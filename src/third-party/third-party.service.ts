@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ThirdParty } from './entities/third-party.entity';
-import { Repository } from 'typeorm';
+import { Brackets, IsNull, Repository } from 'typeorm';
 import { CreateThirdPartyDto, UpdateThirdPartyDto } from './dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { validate as isUUID } from 'uuid';
@@ -25,6 +25,7 @@ export class ThirdPartyService {
 
       const thirdPartyFound = await this.thirdPartyRepository.findOneBy({
         name: name.toLowerCase(),
+        removedAt: IsNull(),
       });
 
       if (thirdPartyFound) {
@@ -48,6 +49,7 @@ export class ThirdPartyService {
     return await this.thirdPartyRepository.find({
       take: limit,
       skip: offset,
+      where: { removedAt: IsNull() },
       order: {
         name: 'ASC',
       },
@@ -59,12 +61,29 @@ export class ThirdPartyService {
     if (isUUID(searchTerm)) {
       thirdParty = await this.thirdPartyRepository.findOneBy({
         id: searchTerm,
+        removedAt: IsNull(),
       });
     } else {
-      thirdParty = await this.thirdPartyRepository.findOneBy({
-        name: searchTerm.toLowerCase(),
-      });
+      const queryBuilder = this.thirdPartyRepository.createQueryBuilder();
+
+      thirdParty = await queryBuilder
+        .where('ThirdParty.removedAt IS NULL')
+        .andWhere(
+          new Brackets((qb) => {
+            qb.where('ThirdParty.name = :name', {
+              name: searchTerm.toLowerCase(),
+            }).orWhere(
+              'ThirdParty.identificationNumber = :identificationNumber',
+              {
+                identificationNumber: searchTerm,
+              },
+            );
+          }),
+        )
+        .getOne();
     }
+
+    console.log(thirdParty);
 
     if (!thirdParty) {
       throw new InternalServerErrorException(`Third party not found`);
@@ -77,6 +96,7 @@ export class ThirdPartyService {
     const thirdParty = await this.thirdPartyRepository.find({
       where: {
         userId: userId,
+        removedAt: IsNull(),
       },
       order: {
         name: 'ASC',
