@@ -1,3 +1,4 @@
+import { Purchase } from 'src/purchases/entities/purchase.entity';
 import { ThirdPartyType } from 'src/third-party-type/entities/third-party-type.entity';
 import {
   Column,
@@ -5,6 +6,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -49,4 +51,7 @@ export class ThirdParty {
   )
   @JoinColumn({ name: 'identificationTypeId' })
   idThirdPartyType: ThirdParty;
+
+  @OneToMany(() => Purchase, (purchase) => purchase.thirdPartyId)
+  purchases: Purchase[];
 }
